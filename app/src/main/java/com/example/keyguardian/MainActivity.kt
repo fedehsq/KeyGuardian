@@ -1,111 +1,122 @@
 package com.example.keyguardian
 
-import android.hardware.biometrics.BiometricManager
-import android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL
-import android.os.Build
 import android.os.Bundle
-import android.security.keystore.KeyGenParameterSpec
-import android.security.keystore.KeyProperties
 import android.util.Log
-import androidx.annotation.RequiresApi
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.security.crypto.MasterKeys
 import com.example.keyguardian.databinding.ActivityMainBinding
+import com.example.keyguardian.security.SecurityUtils
 import com.google.android.material.snackbar.Snackbar
-import javax.crypto.KeyGenerator
 
+
+private const val TAG = "MyActivity"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    /*
+    private fun auth() {
 
-    private val AUTHENTICATION_DURATION_SECONDS = 30
+        val biometricManager =
+            applicationContext.getSystemService(Context.BIOMETRIC_SERVICE) as BiometricManager
+        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                Log.e(
+                    TAG, "The user hasn't associated " +
+                            "any biometric credentials with their account."
+                )
+            }
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                Log.v(TAG, "App can authenticate using biometrics.")
+            }
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                Log.e(TAG, "No biometric features available on this device.")
+            }
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                Log.e(TAG, "Biometric features are currently unavailable.")
+            }
 
+            BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
+                Log.e(TAG, "The security update is required.")
+            }
+        }
 
-    private val TAG = "MyActivity"
+        val authenticator = BiometricPrompt.Builder(this)
+            .setAllowedAuthenticators(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+            .setTitle("Authenticate to access your passwords")
+            .setSubtitle("Enter your PIN or pattern to access your passwords")
+            .build()
 
-    @RequiresApi(Build.VERSION_CODES.P)
-    fun authenticate() {
-        return BiometricManager.from(this).canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+        // Handle the authentication result
+        authenticator.authenticate(
+            CancellationSignal(),
+            ContextCompat.getMainExecutor(this),
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    // The user has been successfully authenticated
+                    Log.v(TAG, "Auth success")
+                    // get the master key
+
+                    try {
+                        val sharedPreferences = EncryptedSharedPreferences.create(
+                            applicationContext,
+                            "secret_settings",
+                            masterKey,
+                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                        )
+
+                        with(sharedPreferences.edit()) {
+                            // Edit the user's shared preferences...
+                            // Write the user's name to the preferences
+                            putString("name", "John")
+                            apply()
+                        }
+
+                        // Get the user's name from the preferences
+                        val name = sharedPreferences.getString("name", null)
+                        Log.v(TAG, "Name: $name")
+
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error: $e")
+                    }
+
+                }
+
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    // An error occurred during authentication
+                }
+
+                override fun onAuthenticationFailed() {
+                    // Authentication failed
+                }
+            }
+        )
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
+     */
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
-
-        Log.v(TAG, "Before auth")
-        // Attempt to authenticate the user
-        /*val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-        if (keyguardManager.isKeyguardSecure) {
-            BiometricPrompt.Builder(this)
-                .setTitle("Authenticate to access your passwords")
-                .setSubtitle("Enter your PIN or pattern to access your passwords")
-                .setNegativeButton("Cancel", this.mainExecutor, { dialog, which ->
-                    // Handle negative button click
-                })
-                .build()
-                .authenticate(
-                    BiometricPrompt.CryptoObject(Cipher.getInstance("AES/GCM/NoPadding"))
-                )
-            val intent = keyguardManager.createConfirmDeviceCredentialIntent(
-                "Authenticate to access your passwords",
-                "Enter your PIN or pattern to access your passwords"
-            )
-            if (intent != null) {
-                startActivityForResult(intent, REQUEST_CODE_CONFIRM_DEVICE_CREDENTIALS)
-            }
-        }*/
-        try {
-
-            val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC
-            val mainKeyAlias = MasterKeys.getOrCreate(keyGenParameterSpec)
-
-            // Set up the key generator parameter specifications
-            val builder = KeyGenParameterSpec.Builder(
-                mainKeyAlias, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-            )
-            builder
-                .setUserAuthenticationRequired(true)
-                .setUserAuthenticationParameters(
-                    AUTHENTICATION_DURATION_SECONDS,
-                    KeyProperties.AUTH_DEVICE_CREDENTIAL
-                )
-
-            val keyGenerator = KeyGenerator.getInstance(
-                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore"
-            )
-            keyGenerator.init(builder.build())
-            val key = keyGenerator.generateKey()
-            // print key
-            Log.v(TAG, key.toString())
-
-
-        } catch (e: Exception) {
-            Log.e(TAG, e.toString())
-        }
-
-
-        /* Set up the cipher
-        cipher = Cipher.getInstance(
-            KeyProperties.KEY_ALGORITHM_AES + "/"
-                    + KeyProperties.BLOCK_MODE_GCM + "/"
-                    + KeyProperties.ENCRYPTION_PADDING_NONE
-        )*/
-
-
+        Log.v(TAG, "onCreate")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
-
+        if (!SecurityUtils.checkAndSet(this)) {
+            Log.e(TAG, "Failed to setup security")
+            binding.text.text = "Failed to setup security"
+            binding.text.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        }
         binding.fab.setOnClickListener { view ->
-            binding.hiText.text = "Hi, World!"
-            Snackbar.make(view, binding.hiText.text, Snackbar.LENGTH_LONG).setAnchorView(R.id.fab)
+            binding.text.text = "Hi, World!"
+            Snackbar.make(view, binding.text.text, Snackbar.LENGTH_LONG)
+                .setAnchorView(R.id.fab)
                 .setAction("Action", null).show()
         }
     }
+
 
 }
