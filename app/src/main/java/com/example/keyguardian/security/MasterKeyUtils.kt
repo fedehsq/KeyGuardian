@@ -2,6 +2,7 @@ package com.example.keyguardian.security
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Log
 import androidx.security.crypto.MasterKey
 
 class MasterKeyUtils {
@@ -16,22 +17,28 @@ class MasterKeyUtils {
          */
         fun setupMasterKey(context: Context) {
             // Set up the key generator parameter specifications
-            val keyGen = KeyGenParameterSpec.Builder(
-                MasterKey.DEFAULT_MASTER_KEY_ALIAS,
-                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
-            )
-            keyGen
-                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                .setUserAuthenticationRequired(true)
-                .setUserAuthenticationParameters(
-                    authDurationSeconds,
-                    KeyProperties.AUTH_DEVICE_CREDENTIAL
+            try {
+                val keyGen = KeyGenParameterSpec.Builder(
+                    MasterKey.DEFAULT_MASTER_KEY_ALIAS,
+                    KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
                 )
-                .setKeySize(256)
-            this.masterKey = MasterKey.Builder(context)
-                .setKeyGenParameterSpec(keyGen.build())
-                .build()
+                keyGen
+                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                    .setUserAuthenticationRequired(true)
+                    .setUserAuthenticationParameters(
+                        authDurationSeconds,
+                        KeyProperties.AUTH_DEVICE_CREDENTIAL
+                    )
+                    .setKeySize(256)
+                this.masterKey = MasterKey.Builder(context)
+                    .setKeyGenParameterSpec(keyGen.build())
+                    .build()
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to setup master key: ${e.message}")
+                throw Exception("Failed to setup master key: ${e.message}")
+            }
+
         }
 
         /**

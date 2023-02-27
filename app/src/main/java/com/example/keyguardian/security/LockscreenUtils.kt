@@ -10,13 +10,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.keyguardian.activities.MainActivity
 
 class LockscreenUtils {
 
     companion object {
         private const val TAG = "LockscreenUtils"
         private lateinit var requestPinSetup: ActivityResultLauncher<IntentSenderRequest>
-        private var lockScreenEnabled = false
 
         /**
          * Get the authentication status of the device for biometrics
@@ -57,23 +57,27 @@ class LockscreenUtils {
             requestPinSetup = activity.registerForActivityResult(
                 ActivityResultContracts.StartIntentSenderForResult()
             ) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    // User has set up a lock screen, do something
-                    Log.v(TAG, "Lock screen set up")
-                    lockScreenEnabled = true
-                } else {
-                    // User has not set up a lock screen, handle the error
+                Log.v(TAG, "Pin setup result: $result")
+                val lockScreenEnabled =
+                    getDeviceAuthStatus(activity) == BiometricManager.BIOMETRIC_SUCCESS
+                if (!lockScreenEnabled) {
                     Log.e(TAG, "Lock screen not set up")
                     Toast.makeText(
                         activity,
                         "You must set up a lock screen to use this app",
                         Toast.LENGTH_SHORT
                     ).show()
+                } else {
+                    Log.v(TAG, "Lock screen set up")
+                    // Launch MainActivity
+                    val intent = Intent(activity, MainActivity::class.java)
+                    activity.startActivity(intent)
                 }
+
             }
         }
 
-        fun setupLockScreen(context: Context): Boolean {
+        fun setupLockScreen(context: Context) {
             if (!this::requestPinSetup.isInitialized) {
                 setPinCallback(context as ComponentActivity)
             }
@@ -90,7 +94,6 @@ class LockscreenUtils {
             } else {
                 Toast.makeText(context, "No activity found", Toast.LENGTH_SHORT).show()
             }
-            return lockScreenEnabled
         }
     }
 }

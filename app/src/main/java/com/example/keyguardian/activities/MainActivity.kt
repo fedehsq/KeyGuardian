@@ -1,18 +1,19 @@
-package com.example.keyguardian
+package com.example.keyguardian.activities
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import com.example.keyguardian.R
 import com.example.keyguardian.databinding.ActivityMainBinding
 import com.example.keyguardian.security.SecurityUtils
 import com.google.android.material.snackbar.Snackbar
 
-
 private const val TAG = "MyActivity"
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
 
     /*
@@ -101,20 +102,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
-        Log.v(TAG, "onCreate")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        if (!SecurityUtils.checkAndSet(this)) {
+        render()
+    }
+
+    private fun render() {
+        if (!SecurityUtils.setupSecurity(this)) {
             Log.e(TAG, "Failed to setup security")
-            binding.text.text = "Failed to setup security"
-            binding.text.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        }
-        binding.fab.setOnClickListener { view ->
-            binding.text.text = "Hi, World!"
-            Snackbar.make(view, binding.text.text, Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.fab)
-                .setAction("Action", null).show()
+            binding.authenticateButton.setOnClickListener {
+                // Launch this activity again to setup security
+                render()
+            }
+        } else {
+            Log.v(TAG, "Security setup successful")
+            binding.text.text = "Security setup successful"
+            binding.authenticateButton.visibility = View.GONE
+            binding.fab.visibility = View.VISIBLE
+            binding.fab.setOnClickListener { view ->
+                binding.text.text = "Hi, World!"
+                Snackbar.make(view, binding.text.text, Snackbar.LENGTH_LONG)
+                    .setAnchorView(R.id.fab)
+                    .setAction("Action", null).show()
+            }
         }
     }
 
