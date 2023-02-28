@@ -1,3 +1,3 @@
 package com.example.keyguardian.models
 
-data class KeyValuePair(val key: String, val value: String)
+data class KeyValuePair(var key: String, var value: String)

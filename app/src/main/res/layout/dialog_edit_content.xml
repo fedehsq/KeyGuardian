@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="16dp"
+    >
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
@@ -14,14 +16,14 @@
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/label_text_input_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_margin="8dp"
         android:hint="@string/label" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/secret_text_input_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_margin="8dp"
         android:hint="@string/secret" />
 
