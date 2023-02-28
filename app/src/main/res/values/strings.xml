@@ -2,7 +2,7 @@
     <string name="app_name">KeyGuardian</string>
     <string name="action_settings">Settings</string>
     <string name="add_new_secret">Add new secret</string>
-    <string name="auth_text">You must authenticate to use this app.</string>
+    <string name="auth_required_text">You must authenticate to use this app.</string>
     <string name="authenticate">Authenticate</string>
     <string name="title_activity_lockscreen_setup">LockscreenSetupActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -47,4 +47,8 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="title_activity_secrets_list">SecretsListActivity</string>
+    <string name="security_setup_successful">Security setup successful</string>
+    <string name="lockscreen_setup">You must set a lockscreen to use this app.</string>
+    <string name="setup_lockscreen">Setup Lockscreen</string>
 </resources>

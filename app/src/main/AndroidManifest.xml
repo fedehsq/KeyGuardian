@@ -18,14 +18,22 @@
         android:theme="@style/Theme.KeyGuardian"
         tools:targetApi="31">
         <activity
-            android:name=".LockscreenSetupActivity"
+            android:name=".EditSecretActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AuthenticateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.LockscreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SecretsListActivity"
             android:exported="false"
-            android:label="@string/title_activity_lockscreen_setup"
+            android:label="@string/title_activity_secrets_list"
             android:theme="@style/Theme.KeyGuardian" />
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.KeyGuardian">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

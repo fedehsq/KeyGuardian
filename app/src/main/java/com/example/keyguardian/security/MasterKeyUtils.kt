@@ -1,4 +1,5 @@
 package com.example.keyguardian.security
+
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -10,12 +11,11 @@ class MasterKeyUtils {
     companion object {
         private const val TAG = "MasterKeyUtils"
         private const val authDurationSeconds = 30
-        private lateinit var masterKey: MasterKey
 
         /**
          * Set up the master key with user authentication required
          */
-        fun setupMasterKey(context: Context) {
+        fun getMasterKey(context: Context): MasterKey {
             // Set up the key generator parameter specifications
             try {
                 val keyGen = KeyGenParameterSpec.Builder(
@@ -31,27 +31,13 @@ class MasterKeyUtils {
                         KeyProperties.AUTH_DEVICE_CREDENTIAL
                     )
                     .setKeySize(256)
-                this.masterKey = MasterKey.Builder(context)
+                return MasterKey.Builder(context)
                     .setKeyGenParameterSpec(keyGen.build())
                     .build()
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to setup master key: ${e.message}")
                 throw Exception("Failed to setup master key: ${e.message}")
             }
-
         }
-
-        /**
-         * Get the master key
-         */
-        fun getMasterKey(): MasterKey {
-            if (!this::masterKey.isInitialized) {
-                throw Exception("Master key not initialized")
-            }
-            // get the master key with library function
-            return this.masterKey
-        }
-
-
     }
 }
