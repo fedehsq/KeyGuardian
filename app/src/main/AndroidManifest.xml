@@ -18,8 +18,14 @@
         android:theme="@style/Theme.KeyGuardian"
         tools:targetApi="31">
         <activity
-            android:name=".EditSecretActivity"
-            android:exported="false" />
+            android:name=".activities.EditSecretActivity"
+            android:exported="false"
+            android:parentActivityName="com.example.keyguardian.activities.SecretsListActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.keyguardian.activities.SecretsListActivity" />
+        </activity>
         <activity
             android:name=".activities.AuthenticateActivity"
             android:exported="false" />

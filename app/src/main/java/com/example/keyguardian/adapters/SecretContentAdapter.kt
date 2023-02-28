@@ -29,12 +29,12 @@ class SecretContentAdapter(private val secret: Secret) : RecyclerView.Adapter<Re
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is SecretViewHolder) {
-            val field = secret.content[position]
+            val field = secret.secretContent[position]
             holder.bind(field.key, field.value)
         }
     }
 
     override fun getItemCount(): Int {
-        return secret.content.size
+        return secret.secretContent.size
     }
 }

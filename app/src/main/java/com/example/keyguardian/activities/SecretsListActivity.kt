@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.keyguardian.R
 import com.example.keyguardian.adapters.SecretsAdapter
 import com.example.keyguardian.databinding.ActivitySecretsListBinding
+import com.example.keyguardian.models.KeyValuePair
+import com.example.keyguardian.models.Secret
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 
@@ -26,11 +28,13 @@ class SecretsListActivity : AppCompatActivity() {
 
         val prefs = EncryptedSharedPreferencesUtils.getInstance(this)
         // Create a json secret object
-        val mapSecret = HashMap<String, String>()
-        mapSecret["username"] = "test"
-        mapSecret["password"] = "test"
-        prefs.putString("credentials", Gson().toJson(mapSecret))
-        prefs.putString("test2", "test2")
+        val secret = Secret(
+            listOf(KeyValuePair("username", "test"), KeyValuePair("password", "test"))
+        )
+        prefs.putString(
+            "credentials",
+            Gson().toJson(secret)
+        )
         val secretsName = prefs.getKeys()
 
         binding.secretsList.adapter = SecretsAdapter(secretsName.toList())

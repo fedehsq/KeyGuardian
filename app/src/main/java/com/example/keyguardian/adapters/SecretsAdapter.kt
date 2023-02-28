@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.keyguardian.R
 import com.example.keyguardian.activities.EditSecretActivity
 import com.example.keyguardian.models.Secret
 
-const val SECRET_EXTRA = "secret"
+const val SECRET_CONTENT_EXTRA = "secret_content"
+const val SECRET_NAME_EXTRA = "secret_name"
+private const val TAG = "SecretsAdapter"
 
 class SecretsAdapter(private val secrets: List<String>) :
     RecyclerView.Adapter<SecretsAdapter.ViewHolder>() {
@@ -34,10 +35,11 @@ class SecretsAdapter(private val secrets: List<String>) :
         holder.titleLayout.setOnClickListener {
             // handle click event
             val prefs = EncryptedSharedPreferencesUtils.getInstance(holder.itemView.context)
-            val jsonSecret = prefs.getString(secretTitle)
+            val secret = Secret.fromJson(prefs.getString(secretTitle))
             // Launch the edit secret activity
             val intent = Intent(holder.itemView.context, EditSecretActivity::class.java)
-            intent.putExtra(SECRET_EXTRA, jsonSecret)
+            intent.putExtra(SECRET_CONTENT_EXTRA, secret.toJson())
+            intent.putExtra(SECRET_NAME_EXTRA, secretTitle)
             // start the activity
             holder.itemView.context.startActivity(intent)
         }
