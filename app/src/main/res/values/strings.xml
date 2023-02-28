@@ -52,4 +52,9 @@
     <string name="lockscreen_setup">You must set a lockscreen to use this app.</string>
     <string name="setup_lockscreen">Setup Lockscreen</string>
     <string name="edit">Edit</string>
+    <string name="hidden_text">*****</string>
+    <string name="very_short_text">Very Short Text</string>
+    <string name="edit_secret_material_text_view">Edit secret</string>
+    <string name="label">Label</string>
+    <string name="secret">Secret</string>
 </resources>

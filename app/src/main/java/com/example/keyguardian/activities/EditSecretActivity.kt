@@ -1,5 +1,6 @@
 package com.example.keyguardian.activities
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -25,16 +26,12 @@ class EditSecretActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        // Set the toolbar title to the secret name
-        supportActionBar?.title = intent.getStringExtra(SECRET_NAME_EXTRA)
-        // show the icon in the toolbar
-
-
 
         // Read the secret from the intent
         val secretIntent = intent.getStringExtra(SECRET_CONTENT_EXTRA)
         val secret: Secret = Secret.fromJson(secretIntent!!)
 
+        binding.secretTitle.text = intent.getStringExtra(SECRET_NAME_EXTRA)
         binding.secretContentList.adapter = SecretContentAdapter(secret)
         binding.secretContentList.layoutManager = LinearLayoutManager(this)
     }
@@ -47,7 +44,10 @@ class EditSecretActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_edit -> {
-            // User chose the "Settings" item, show the app settings UI...
+            // Change the icon
+            item.setIcon(R.drawable.baseline_edit_off_24)
+            // Open dialog to edit the secret
+
             true
         }
 
