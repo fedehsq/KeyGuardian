@@ -2,17 +2,16 @@ package com.example.keyguardian.activities
 
 import EncryptedSharedPreferencesUtils
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.keyguardian.R
 import com.example.keyguardian.adapters.SecretsAdapter
 import com.example.keyguardian.databinding.ActivitySecretsListBinding
-import com.example.keyguardian.models.KeyValuePair
-import com.example.keyguardian.models.Secret
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 
+private const val TAG = "SecretsListActivity"
 
 class SecretsListActivity : AppCompatActivity() {
 
@@ -22,21 +21,13 @@ class SecretsListActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
+        Log.d(TAG, "onCreate")
         binding = ActivitySecretsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
         val prefs = EncryptedSharedPreferencesUtils.getInstance(this)
-        // Create a json secret object
-        val secret = Secret(
-            listOf(KeyValuePair("username", "test"), KeyValuePair("password", "test"))
-        )
-        prefs.putString(
-            "credentials",
-            Gson().toJson(secret)
-        )
         val secretsName = prefs.getKeys()
-
         binding.secretsList.adapter = SecretsAdapter(secretsName.toList())
         binding.secretsList.layoutManager = LinearLayoutManager(this)
         binding.fab.setOnClickListener { view ->

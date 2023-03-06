@@ -6,13 +6,6 @@
     android:layout_margin="16dp"
     >
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/edit_secret_material_text_view"
-        android:textSize="24sp" />
-
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/label_text_input_edit_text"
         android:layout_width="match_parent"

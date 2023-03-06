@@ -57,4 +57,5 @@
     <string name="edit_secret_material_text_view">Edit secret</string>
     <string name="label">Label</string>
     <string name="secret">Secret</string>
+    <string name="delete_field">Delete field</string>
 </resources>

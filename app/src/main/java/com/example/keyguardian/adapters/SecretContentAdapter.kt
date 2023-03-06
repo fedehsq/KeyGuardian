@@ -19,39 +19,69 @@ class SecretContentAdapter(private val secret: Secret) :
         private val keyTextView: TextView = itemView.findViewById(R.id.content_key)
         private val valueTextView: TextView = itemView.findViewById(R.id.content_value)
         private val editButton: ImageButton = itemView.findViewById(R.id.edit_content)
+        private val deleteButton: ImageButton = itemView.findViewById(R.id.edit_content)
 
         fun bind(content: KeyValuePair) {
             keyTextView.text = content.key
             valueTextView.text = content.value
             editButton.setOnClickListener {
-                val inflater = LayoutInflater.from(itemView.context)
-                val dialogView = inflater.inflate(R.layout.dialog_edit_content, null)
-                val label =
-                    dialogView.findViewById<TextInputEditText>(R.id.label_text_input_edit_text)
-                val secret =
-                    dialogView.findViewById<TextInputEditText>(R.id.secret_text_input_edit_text)
-                label.setText(content.key)
-                secret.setText(content.value)
-
-                val dialogBuilder = AlertDialog.Builder(itemView.context)
-                    .setView(dialogView)
-                    .setPositiveButton("Save") { _, _ ->
-                        // Save the edited content to the Secret object
-                        val editedKey = label.text.toString()
-                        val editedSecret = secret.text.toString()
-                        content.key = editedKey
-                        content.value = editedSecret
-                        // Update the value in the UI
-                        keyTextView.text = editedKey
-                        valueTextView.text = editedSecret
-                    }
-                    .setNegativeButton("Cancel", null)
-
-                val dialog = dialogBuilder.create()
-                dialog.show()
+                createEditDialog(content)
+            }
+            deleteButton.setOnClickListener {
+                deleteDialog(content)
             }
         }
+
+        private fun deleteDialog(content: KeyValuePair) {
+
+            val dialogBuilder = AlertDialog.Builder(itemView.context)
+                .setTitle("Are you sure to delete this field?")
+                .setPositiveButton("Save") { _, _ ->
+                    // Save the edited content to the Secret object
+                    val editedKey = label.text.toString()
+                    val editedSecret = secret.text.toString()
+                    content.key = editedKey
+                    content.value = editedSecret
+                    // Update the value in the UI
+                    keyTextView.text = editedKey
+                    valueTextView.text = editedSecret
+                }
+                .setNegativeButton("Cancel", null)
+
+            val dialog = dialogBuilder.create()
+            dialog.show()
+        }
+
+
+        private fun createEditDialog(content: KeyValuePair) {
+            val inflater = LayoutInflater.from(itemView.context)
+            val dialogView = inflater.inflate(R.layout.dialog_edit_content, null)
+            val label =
+                dialogView.findViewById<TextInputEditText>(R.id.label_text_input_edit_text)
+            val secret =
+                dialogView.findViewById<TextInputEditText>(R.id.secret_text_input_edit_text)
+            label.setText(content.key)
+            secret.setText(content.value)
+
+            val dialogBuilder = AlertDialog.Builder(itemView.context)
+                .setView(dialogView)
+                .setPositiveButton("Save") { _, _ ->
+                    // Save the edited content to the Secret object
+                    val editedKey = label.text.toString()
+                    val editedSecret = secret.text.toString()
+                    content.key = editedKey
+                    content.value = editedSecret
+                    // Update the value in the UI
+                    keyTextView.text = editedKey
+                    valueTextView.text = editedSecret
+                }
+                .setNegativeButton("Cancel", null)
+
+            val dialog = dialogBuilder.create()
+            dialog.show()
+        }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
