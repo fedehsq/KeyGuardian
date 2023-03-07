@@ -11,8 +11,7 @@ import com.example.keyguardian.R
 import com.example.keyguardian.activities.EditSecretActivity
 import com.example.keyguardian.models.Secret
 
-const val SECRET_CONTENT_EXTRA = "secret_content"
-const val SECRET_NAME_EXTRA = "secret_name"
+const val SECRET_EXTRA = "secret_extra"
 private const val TAG = "SecretsAdapter"
 
 class SecretsAdapter(private val secrets: List<String>) :
@@ -38,8 +37,7 @@ class SecretsAdapter(private val secrets: List<String>) :
             val secret = Secret.fromJson(prefs.getString(secretTitle))
             // Launch the edit secret activity
             val intent = Intent(holder.itemView.context, EditSecretActivity::class.java)
-            intent.putExtra(SECRET_CONTENT_EXTRA, secret.toJson())
-            intent.putExtra(SECRET_NAME_EXTRA, secretTitle)
+            intent.putExtra(SECRET_EXTRA, secret.toJson())
             // start the activity
             holder.itemView.context.startActivity(intent)
         }

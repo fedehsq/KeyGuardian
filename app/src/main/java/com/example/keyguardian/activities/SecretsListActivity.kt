@@ -3,6 +3,7 @@ package com.example.keyguardian.activities
 import EncryptedSharedPreferencesUtils
 import android.os.Bundle
 import android.util.Log
+import android.window.OnBackInvokedDispatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,5 +36,12 @@ class SecretsListActivity : AppCompatActivity() {
                 .setAnchorView(R.id.fab)
                 .setAction("Action", null).show()
         }
+    }
+
+    override fun getOnBackInvokedDispatcher(): OnBackInvokedDispatcher {
+        finish()
+        Log.d(TAG, "onBack")
+        return super.getOnBackInvokedDispatcher()
+
     }
 }

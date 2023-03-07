@@ -3,7 +3,7 @@ package com.example.keyguardian.models
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class Secret(var secretContent: List<KeyValuePair>) {
+class Secret(var name: String, var secretContent: MutableList<KeyValuePair>) {
     fun toJson(): String {
         return Gson().toJson(this)
     }
