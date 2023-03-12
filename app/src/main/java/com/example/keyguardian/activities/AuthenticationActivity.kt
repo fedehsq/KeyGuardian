@@ -16,7 +16,7 @@ import com.example.keyguardian.databinding.ActivityAuthenticateBinding
 private const val TAG = "ActivityAuthenticate"
 private const val MAX_AUTH_ATTEMPTS = 3
 
-class AuthenticateActivity : AppCompatActivity() {
+class AuthenticationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthenticateBinding
     private var authAttempts = 0
@@ -36,37 +36,8 @@ class AuthenticateActivity : AppCompatActivity() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     // The user has been successfully authenticated
                     Log.v(TAG, "Auth success")
-                    val intent = Intent(this@AuthenticateActivity, SecretsListActivity::class.java)
+                    val intent = Intent(this@AuthenticationActivity, SecretsListActivity::class.java)
                     startActivity(intent)
-
-                    /*
-                    get the master key
-                    try {
-                        val sharedPreferences = EncryptedSharedPreferences.create(
-                            applicationContext,
-                            "secret_settings",
-                            masterKey,
-                            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-                        )
-
-                        with(sharedPreferences.edit()) {
-                            // Edit the user's shared preferences...
-                            // Write the user's name to the preferences
-                            putString("name", "John")
-                            apply()
-                        }
-
-                        // Get the user's name from the preferences
-                        val name = sharedPreferences.getString("name", null)
-                        Log.v(TAG, "Name: $name")
-
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error: $e")
-                    }
-
-                     */
-
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
@@ -74,7 +45,7 @@ class AuthenticateActivity : AppCompatActivity() {
                     Log.e(TAG, "Auth error: $errString")
                     authAttempts++
                     Toast.makeText(
-                        this@AuthenticateActivity,
+                        this@AuthenticationActivity,
                         "Authentication error: $errString",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -85,7 +56,7 @@ class AuthenticateActivity : AppCompatActivity() {
                     Log.e(TAG, "Auth failed")
                     authAttempts++
                     Toast.makeText(
-                        this@AuthenticateActivity,
+                        this@AuthenticationActivity,
                         "Authentication failed",
                         Toast.LENGTH_SHORT
                     ).show()

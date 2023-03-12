@@ -58,4 +58,5 @@
     <string name="label">Label</string>
     <string name="secret">Secret</string>
     <string name="delete_field">Delete field</string>
+    <string name="secret_name">Secret name</string>
 </resources>

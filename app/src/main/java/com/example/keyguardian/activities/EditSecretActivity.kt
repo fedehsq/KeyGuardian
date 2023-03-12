@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.keyguardian.R
 import com.example.keyguardian.adapters.SECRET_EXTRA
 import com.example.keyguardian.adapters.SecretAdapter
@@ -26,9 +24,9 @@ class EditSecretActivity : AppCompatActivity() {
     private lateinit var prefs: EncryptedSharedPreferencesUtils
     private lateinit var secret: Secret
 
-    private fun addSecretContent() {
+    private fun addSecretContentDialog() {
         val inflater = LayoutInflater.from(this)
-        val dialogView = inflater.inflate(R.layout.dialog_edit_content, null)
+        val dialogView = inflater.inflate(R.layout.edit_secret_content, null)
         val label = dialogView.findViewById<TextInputEditText>(R.id.label_text_input_edit_text)
         val secretContent =
             dialogView.findViewById<TextInputEditText>(R.id.secret_text_input_edit_text)
@@ -48,18 +46,16 @@ class EditSecretActivity : AppCompatActivity() {
         val dialog = dialogBuilder.create()
         dialog.show()
     }
-    private fun createEditTitleDialog(title: String) {
+
+    private fun editSecretTitleDialog(title: String) {
         val inflater = LayoutInflater.from(this)
-        val dialogView = inflater.inflate(R.layout.dialog_edit_content, null)
-        val label = dialogView.findViewById<TextInputEditText>(R.id.label_text_input_edit_text)
-        val scr =
-            dialogView.findViewById<TextInputEditText>(R.id.secret_text_input_edit_text)
-        scr.visibility = View.INVISIBLE
-        label.setText(title)
+        val dialogView = inflater.inflate(R.layout.edit_secret_title, null)
+        val name = dialogView.findViewById<TextInputEditText>(R.id.edit_title_text_input_edit_text)
+        name.setText(title)
         val dialogBuilder = AlertDialog.Builder(this).setView(dialogView)
             .setPositiveButton("Save") { _, _ ->
                 // Save the edited content to the Secret object
-                val secretName = label.text.toString()
+                val secretName = name.text.toString()
                 supportActionBar?.title = secretName
                 secret.name = secretName
                 prefs.putString(secretName, secret.toJson())
@@ -78,14 +74,14 @@ class EditSecretActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // Read the secret from the intent
-        secret = Secret.fromJson( intent.getStringExtra(SECRET_EXTRA)!!)
+        secret = Secret.fromJson(intent.getStringExtra(SECRET_EXTRA)!!)
         supportActionBar?.title = secret.name
         binding.secretContentList.adapter = SecretAdapter(secret)
         binding.secretContentList.layoutManager = LinearLayoutManager(this)
         prefs = EncryptedSharedPreferencesUtils.getInstance(this)
 
         binding.fab.setOnClickListener {
-            addSecretContent()
+            addSecretContentDialog()
         }
     }
 
@@ -97,7 +93,7 @@ class EditSecretActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_edit -> {
-            createEditTitleDialog(supportActionBar?.title.toString())
+            editSecretTitleDialog(supportActionBar?.title.toString())
             true
         }
 

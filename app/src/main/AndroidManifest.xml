@@ -27,7 +27,7 @@
                 android:value="com.example.keyguardian.activities.SecretsListActivity" />
         </activity>
         <activity
-            android:name=".activities.AuthenticateActivity"
+            android:name=".activities.AuthenticationActivity"
             android:exported="false" />
         <activity
             android:name=".activities.LockscreenActivity"
@@ -39,6 +39,8 @@
             android:theme="@style/Theme.KeyGuardian" />
         <activity
             android:name=".activities.MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
             android:exported="true"
             android:theme="@style/Theme.KeyGuardian">
             <intent-filter>

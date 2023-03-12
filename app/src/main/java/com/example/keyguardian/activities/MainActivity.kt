@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LockscreenActivity::class.java)
             startActivity(intent)
         } else {
-            val intent = Intent(this, AuthenticateActivity::class.java)
+            val intent = Intent(this, AuthenticationActivity::class.java)
             startActivity(intent)
         }
         finish()

@@ -34,8 +34,8 @@ class SecretAdapter(private val secret: Secret) : RecyclerView.Adapter<SecretAda
         holder.keyTextView.text = secret.secretContent[holder.adapterPosition].key
         holder.valueTextView.text = secret.secretContent[holder.adapterPosition].value
         holder.editButton.setOnClickListener {
-            val inflater = LayoutInflater.from(holder.itemView.context)
-            val dialogView = inflater.inflate(R.layout.dialog_edit_content, null)
+            val dialogView = LayoutInflater.from(holder.itemView.context)
+                .inflate(R.layout.edit_secret_content, null)
             val label = dialogView.findViewById<TextInputEditText>(R.id.label_text_input_edit_text)
             val secretContent =
                 dialogView.findViewById<TextInputEditText>(R.id.secret_text_input_edit_text)

@@ -34,7 +34,7 @@ class LockscreenActivity : AppCompatActivity() {
         } else {
             Log.v(TAG, "Lock screen set up")
             // Launch MainActivity
-            val intent = Intent(this, AuthenticateActivity::class.java)
+            val intent = Intent(this, AuthenticationActivity::class.java)
             startActivity(intent)
         }
     }

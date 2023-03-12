@@ -1,5 +1,6 @@
 package com.example.keyguardian.security
 
+import android.app.KeyguardManager
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -10,7 +11,7 @@ class MasterKeyUtils {
 
     companion object {
         private const val TAG = "MasterKeyUtils"
-        private const val authDurationSeconds = 30
+        private const val authDurationSeconds = 10
 
         /**
          * Set up the master key with user authentication required
