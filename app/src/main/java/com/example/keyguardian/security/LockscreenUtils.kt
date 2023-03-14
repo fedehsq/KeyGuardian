@@ -17,42 +17,6 @@ class LockscreenUtils {
 
     companion object {
         private const val TAG = "LockscreenUtils"
-        private lateinit var requestPinSetup: ActivityResultLauncher<IntentSenderRequest>
-
-        /**
-         * Get the authentication status of the device for biometrics
-         * or device credentials (PIN, pattern, password) and return the code
-         */
-        fun getDeviceAuthStatus(context: Context): Int {
-            val biometricManager =
-                context.getSystemService(Context.BIOMETRIC_SERVICE) as BiometricManager
-            when (biometricManager.canAuthenticate(BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
-                BiometricManager.BIOMETRIC_SUCCESS -> {
-                    Log.v(TAG, "App can authenticate using biometrics.")
-                    return BiometricManager.BIOMETRIC_SUCCESS
-                }
-                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                    Log.e(TAG, "No biometric features available on this device.")
-                    return BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE
-                }
-                BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                    Log.e(TAG, "Biometric features are currently unavailable.")
-                    return BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE
-                }
-                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                    Log.e(
-                        TAG, "The user hasn't associated " +
-                                "any biometric credentials with their account."
-                    )
-                    return BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED
-                }
-                BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
-                    Log.e(TAG, "The security update is required.")
-                    return BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED
-                }
-            }
-            throw Exception("Unknown error")
-        }
 
         /**
          * Check if the device has a lock screen set up (PIN, pattern, password, or biometrics)

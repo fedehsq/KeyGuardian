@@ -11,7 +11,7 @@ class MasterKeyUtils {
 
     companion object {
         private const val TAG = "MasterKeyUtils"
-        private const val authDurationSeconds = 10
+        private const val authDurationSeconds = 30
 
         /**
          * Set up the master key with user authentication required
@@ -29,9 +29,10 @@ class MasterKeyUtils {
                     .setUserAuthenticationRequired(true)
                     .setUserAuthenticationParameters(
                         authDurationSeconds,
-                        KeyProperties.AUTH_DEVICE_CREDENTIAL
+                        KeyProperties.AUTH_DEVICE_CREDENTIAL or KeyProperties.AUTH_BIOMETRIC_STRONG
                     )
                     .setKeySize(256)
+
                 return MasterKey.Builder(context)
                     .setKeyGenParameterSpec(keyGen.build())
                     .build()

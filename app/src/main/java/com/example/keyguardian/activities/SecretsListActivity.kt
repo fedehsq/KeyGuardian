@@ -34,7 +34,6 @@ class SecretsListActivity : AppCompatActivity() {
                 val secretName = title.text.toString()
                 val secret = Secret(secretName, mutableListOf())
                 prefs.putString(secretName, secret.toJson())
-                //binding.secretsList.adapter!!.notifyItemInserted(prefs.getKeys().size)
                 // Launch the EditSecretActivity
                 val intent = android.content.Intent(this, EditSecretActivity::class.java)
                 intent.putExtra(SECRET_EXTRA, secret.toJson())
@@ -50,14 +49,14 @@ class SecretsListActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        Log.d(TAG, "onCreate")
         binding = ActivitySecretsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        supportActionBar!!.title = "Secrets"
 
         prefs = EncryptedSharedPreferencesUtils.getInstance(this)
         val secretsName = prefs.getKeys()
-        binding.secretsList.adapter = SecretsAdapter(secretsName.toList())
+        binding.secretsList.adapter = SecretsAdapter(secretsName.toMutableList())
         binding.secretsList.layoutManager = LinearLayoutManager(this)
         binding.fab.setOnClickListener {
             // Open dialog to create a new secret

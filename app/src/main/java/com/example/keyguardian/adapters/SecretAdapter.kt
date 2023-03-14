@@ -22,7 +22,7 @@ class SecretAdapter(private val secret: Secret) : RecyclerView.Adapter<SecretAda
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.secret_row_layout, parent, false)
+            .inflate(R.layout.secret_layout, parent, false)
         return ViewHolder(view)
     }
 

@@ -1,8 +1,7 @@
 package com.example.keyguardian.activities
 
 import android.content.Intent
-import android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import android.hardware.biometrics.BiometricManager.Authenticators.*
 import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
 import android.os.CancellationSignal
@@ -12,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import com.example.keyguardian.databinding.ActivityAuthenticateBinding
+import java.util.concurrent.CountDownLatch
 
 private const val TAG = "ActivityAuthenticate"
 private const val MAX_AUTH_ATTEMPTS = 3
@@ -38,6 +38,7 @@ class AuthenticationActivity : AppCompatActivity() {
                     Log.v(TAG, "Auth success")
                     val intent = Intent(this@AuthenticationActivity, SecretsListActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
