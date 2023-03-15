@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import com.example.keyguardian.databinding.ActivityAuthenticateBinding
-import java.util.concurrent.CountDownLatch
 
 private const val TAG = "ActivityAuthenticate"
 private const val MAX_AUTH_ATTEMPTS = 3

@@ -59,4 +59,6 @@
     <string name="secret">Secret</string>
     <string name="delete_field">Delete field</string>
     <string name="secret_name">Secret name</string>
+    <string name="secrets">secrets</string>
+    <string name="base64_encode">Base64 encode</string>
 </resources>
