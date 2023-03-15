@@ -34,8 +34,10 @@ This means that even if an attacker gains access to the shared preferences file,
 
 ## Attack Scenario
 Let's say that an attacker gains access to the shared preferences file and tries to read the data, with root privilege is quite simple.
-In the simplest case, the attacker can use the `adb shell` command to access the device's shell and then use the `cat` command to read the shared preferences file.
-![](./prefs.png)
+In the simplest case, the attacker can use the `adb shell` command to access the device's shell and then use the `cat` command to read the shared preferences file.  
+
+![](./prefs.png)  
+
 But the attacker will not be able to read the data because the data is encrypted and the encryption key is protected by the `Android KeyStore system`
 - `__androidx_security_crypto_encrypted_prefs_key_keyset__` alias is associated with the secret key used to secure the entire set of shared preferences of the application (`MasterKey`)
 - `__androidx_security_crypto_encrypted_prefs_value_keyset__` alias is associated with the key used to secure specific values of the application's shared preferences.
