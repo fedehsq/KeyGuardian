@@ -3,6 +3,7 @@ package com.example.keyguardian.activities
 import EncryptedSharedPreferencesUtils
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -16,6 +17,7 @@ import com.example.keyguardian.databinding.ActivitySecretsListBinding
 import com.example.keyguardian.models.Secret
 import com.google.android.material.textfield.TextInputEditText
 import java.util.Base64
+import kotlin.math.log
 
 private const val TAG = "SecretsListActivity"
 
@@ -60,6 +62,34 @@ class SecretsListActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this).setView(dialogView).create()
         dialog.show()
     }
+    private fun showUploadDialog() {
+        val inflater = LayoutInflater.from(this)
+        val dialogView = inflater.inflate(R.layout.show_secrets_dialog, null)
+        val secretsEditText = dialogView.findViewById<TextInputEditText>(R.id.show_secrets_text_input_edit_text)
+        val encodeButton = dialogView.findViewById<android.widget.Button>(R.id.encode_button)
+
+        encodeButton.text = "Upload"
+        secretsEditText.hint = "Paste your secrets here"
+        encodeButton.setOnClickListener {
+            // Get all the secrets from the EditText and create new secrets from them
+            var secrets = secretsEditText.text.toString()
+            val gson = com.google.gson.Gson()
+            val secretList = gson.fromJson(secrets, Array<Secret>::class.java).toList()
+            Log.d(TAG, "Secrets: $secretList")
+            for (secret in secretList) {
+                try {
+                    Log.d(TAG, secret.name)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error uploading secret: ${e.message}")
+                }
+            }
+            // for (secret in secretList) {
+            //     prefs.putString(secret.name, secret.toJson())
+            // }
+        }
+        val dialog = AlertDialog.Builder(this).setView(dialogView).create()
+        dialog.show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -90,6 +120,10 @@ class SecretsListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_download -> {
             showSecretsDialog()
+            true
+        }
+        R.id.action_upload -> {
+            showUploadDialog()
             true
         }
 
