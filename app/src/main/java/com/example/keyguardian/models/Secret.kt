@@ -1,5 +1,6 @@
 package com.example.keyguardian.models
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -14,7 +15,9 @@ class Secret(var name: String, var secretContent: MutableList<KeyValuePair>) {
 
     companion object {
         fun fromJson(json: String): Secret {
-            return Gson().fromJson(json, object : TypeToken<Secret>() {}.type)
+            // return Gson().fromJson(json, object : TypeToken<Secret>() {}.type)
+            return Gson().fromJson(json, Secret::class.java)
+
         }
     }
 }
